@@ -1,0 +1,23 @@
+# E8 - Equidad: ¿se sacrifica a las calles transversales? Reúne los eval.csv de todos los métodos
+# y deja runs/E8/fairness.csv; analysis.plots / analysis.tables calculan de ahí
+#   * espera p95 por aproximación (columna p95_wait_by_approach, JSON)
+#   * espera máxima en calles transversales (max_wait_cross_streets)
+exp: E8
+# Globs relativos a --runs-dir. Los CSV deben tener las columnas del contrato §7.
+sources:
+  - "E1/*/eval*.csv"           # líneas base
+  - "E[2-6]/*/seed*/eval.csv"  # agentes aprendidos (evaluación final de train.py --eval)
+  - "E8/*/seed*/eval.csv"      # variantes con penalización de equidad (E8/qmix_fair.yaml, E8/comm_fair.yaml)
+  - "E7/robustness.csv"        # perturbaciones (variant != pico se separan por la columna `variant`)
+scenarios: [cruce_pico, reforma_pico]   # null = todos
+methods: null                            # null = todos
+
+# Variante con penalización (PLAN §8.2, último párrafo): sanity con QMIX dejó una calle transversal
+# sin servir hasta 1573 s, así que se entrena con la recompensa `diff-waiting-time-pending-fair`
+#   r_t = r_t^pending - fair_lambda * (M_t - M_{t-1}) / 100,  M_t = espera máxima por aproximación
+# (agents/rewards.py). Las configs de entrenamiento viven en esta misma carpeta (qmix_fair.yaml,
+# comm_fair.yaml, mismo presupuesto que E5/E6); run_matrix las entrena en la fase 2 (con selección
+# del checkpoint y evaluación final) y este archivo, que no tiene `algo`, solo reúne los CSV en la
+# fase 4. El trade-off se lee comparando qmix vs qmix_fair y comm vs comm_fair (espera media y
+# demora total contra max_wait_cross_streets). Para barrer lambda: copiar la config con otro
+# hparams.fair_lambda y otro `name`.

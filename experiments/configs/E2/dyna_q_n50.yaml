@@ -1,0 +1,24 @@
+exp: E2
+algo: dyna_q
+name: dyna_q_n50
+scenario: cruce_pico
+seed: 0
+total_episodes: 200   # 200 x 720 = 144 000 pasos de entorno (docs/ajuste_aprendizaje.md)
+num_seconds: 3600
+eval:
+  scenarios:
+  - cruce_pico
+  - cruce_mediodia
+  every_episodes: 20   # checkpoint cada 20 episodios (y al final)
+  val_seeds: 2         # seleccion del checkpoint con VAL_SEEDS[:2] (experiments/train.py)
+hparams:
+  reward_fn: diff-waiting-time-pending   # entrenamiento: espera + backlog de insercion (agents/rewards.py)
+  thresholds: [0.15, 0.45, 0.8]   # 4 niveles de cola (bajo, medio, alto, lleno)
+  agg: max                         # peor carril de cada aproximacion
+  alpha: 0.1
+  gamma: 0.99
+  eps_start: 1.0
+  eps_end: 0.05
+  eps_schedule: linear
+  eps_decay_frac: 0.7
+  n_planning: 50

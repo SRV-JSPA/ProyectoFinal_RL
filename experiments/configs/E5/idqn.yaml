@@ -1,0 +1,31 @@
+# E5: IDQN (un Double-DQN independiente por semáforo) en el corredor completo.
+exp: E5
+algo: idqn
+name: idqn
+scenario: reforma_pico
+seed: 0
+total_episodes: 200   # 200 x 720 = 144 000 decisiones por agente (igual en E5 y E6)
+num_seconds: 3600
+hparams:
+  reward_fn: diff-waiting-time-pending   # entrenamiento: espera + backlog de insercion (agents/rewards.py)
+  lr: 1.0e-4
+  gamma: 0.99
+  hidden: [128, 128]
+  buffer_size: 50000
+  batch_size: 64
+  learning_starts: 1000
+  train_freq: 1
+  target_update_interval: 500
+  tau: 0.005            # Polyak en cada paso de entrenamiento
+  eps_start: 1.0
+  eps_end: 0.05
+  eps_fraction: 0.3
+  grad_clip: 10.0
+  reward: team           # recompensa de equipo (IQL cooperativo); con local bloqueaba las entradas
+  reward_scale: 0.02     # suma de 5 cruces => 0.1 por cruce
+  reward_norm: false
+  neighbor_obs: false
+  shared_params: false
+  device: auto
+  save_every: 10
+eval: {scenarios: [reforma_pico, reforma_mediodia, reforma_pico_x13], every_episodes: 20, val_seeds: 2}
