@@ -1,0 +1,42 @@
+exp: E5
+algo: mappo
+name: mappo
+scenario: reforma_pico
+seed: 3
+total_episodes: 200
+num_seconds: 3600
+hparams:
+  lr: 0.0005
+  anneal_lr: true
+  gamma: 0.99
+  gae_lambda: 0.95
+  clip_coef: 0.2
+  ent_coef: 0.01
+  vf_coef: 0.5
+  update_epochs: 5
+  num_minibatches: 4
+  n_steps: 240
+  max_grad_norm: 10.0
+  norm_adv: true
+  clip_vloss: true
+  value_norm: true
+  hidden:
+  - 128
+  - 128
+  critic_hidden:
+  - 256
+  - 256
+  state_queues: true
+  reward_scale: 0.1
+  reward_norm: false
+  device: auto
+  save_every: 10
+  reward_fn: diff-waiting-time-pending
+eval:
+  scenarios:
+  - reforma_pico
+  - reforma_mediodia
+  - reforma_pico_x13
+  every_episodes: 20
+  val_seeds: 2
+run_dir: /Users/alexismesias/Documents/Codes/AprendizajRefuerzo/Proyecto Final/ProyectoFinalAR/runs/E5/mappo/seed3

@@ -8,7 +8,24 @@ venv/
 .ipynb_checkpoints/
 
 # Experiment outputs (results that go into the report are copied to docs/ or analysis/results/)
-runs/
+runs/**
+# ...except the trained models used by the web demo (config + model, in the run and in best/)
+!runs/**/
+!runs/E5/mappo/seed3/config.yaml
+!runs/E5/mappo/seed3/model.pt
+!runs/E5/mappo/seed3/best/*
+!runs/E5/qmix/seed3/config.yaml
+!runs/E5/qmix/seed3/model.pt
+!runs/E5/qmix/seed3/best/*
+!runs/E6/comm/seed0/config.yaml
+!runs/E6/comm/seed0/model.pt
+!runs/E6/comm/seed0/best/*
+!runs/E4/dqn_best/seed1/config.yaml
+!runs/E4/dqn_best/seed1/model.pt
+!runs/E4/dqn_best/seed1/best/*
+!runs/E4/ppo/seed0/config.yaml
+!runs/E4/ppo/seed0/model.zip
+!runs/E4/ppo/seed0/best/*
 outputs/
 wandb/
 *.tfevents.*
